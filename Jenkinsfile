@@ -33,6 +33,7 @@ pipeline {
       steps {
        sh 'docker ps --filter "name=notifier-test" | grep notifier-test || exit 1'
     }
+  }
 }
 
    post {
