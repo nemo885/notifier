@@ -10,7 +10,7 @@ pipeline {
     stage('build') {
        steps {
            script {
-         dockerimage = docker.build("notifier:latest" , "notifier")
+         dockerimage = docker.build("notifier:latest" , ".")
   
       }
    }
