@@ -1,32 +1,37 @@
-name: CI 
-  on:
-    push:
-      branches:
-        -main
-    pull_request:
-      branches:
-        -main
-  steps:
-    -name: Checkout
-     uses: action/checkout@4
-    
-    -name: Build Docker image
-     run: |
-       docker build -t notifier:latest ./notifier
-   
-    -name: Run container
-     run: |
-       docker run -d --name notifier-test -e ENV=test notifier:latest
+name: CI
 
-    -name: Wait
-     run: sleep 5
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-    -name: Check container
-     run: |
-       IS_RUNNING=$(docker inspect -f '{{.State.Running}}' notifier-test)
-       echo "Container running status: $IS_RUNNING"
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-       if [ "IS_RUNNING" = "false" ]; then
-         docker logs notifier-test
-         exit 1
-      fi
+      - name: Build Docker image
+        run: |
+          docker build -t notifier:latest ./notifier
+
+      - name: Run container
+        run: |
+          docker run -d --name notifier-test -e ENV=test notifier:latest
+
+      - name: Wait
+        run: sleep 5
+
+      - name: Check container
+        run: |
+          IS_RUNNING=$(docker inspect -f '{{.State.Running}}' notifier-test)
+          echo "Container running status: $IS_RUNNING"
+         
+          if [ "$IS_RUNNING" = "false" ]; then
+            docker logs notifier-test
+            exit 1
+          fi
