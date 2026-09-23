@@ -17,7 +17,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t notifier:latest ./notifier
+          docker build -t notifier:latest .
 
       - name: Run container
         run: |
