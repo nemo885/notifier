@@ -1,0 +1,27 @@
+name: Check
+   on:
+  push:
+    branches:
+        -dev
+   
+env:
+   TARGET_ENV: "staging"
+  
+  jobs:
+    deploy-check:
+        runs-on: ubuntu:latest
+  steps:
+ 
+  -name: Check out repository
+   uses: action/checkout@v4
+
+  -name: print the message
+    run: echo " Deploying to: ${{TARGET_ENV}}"
+   
+  -name: use deploy token
+   env:
+     TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+  run: echo "Using token: $TOKEN"
+
+      
+  
