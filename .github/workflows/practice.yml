@@ -1,0 +1,27 @@
+name: Practice
+   on:
+     pull-requst:
+          -main
+          
+env:
+   PROJECT_NAME: "my-awesome-cloud-app"
+   
+   jobs:
+      test-and-verify:
+        runs-on: ububtu-latest
+        
+        steps:
+         -name: Checkout repository
+          uses: action/checkout@v4
+          
+         -name: Print welcome message
+          run: echo "Hello from $PROJECT_NAME!"
+          
+         -name: Connect to API
+          env:
+             MY_SECRET_KEY: ${{ secrets.API_KEY }}
+           run: echo "Connection to API with key $MY_SECRET_KEY"
+           
+       
+       
+    
